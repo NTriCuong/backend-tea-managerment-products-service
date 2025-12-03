@@ -14,7 +14,7 @@ const getProducts = async () =>{
     return rowsProducts;
 }
 // tim kiếm sản phẩm theo id
-const getProduct = async () =>{ 
+const getProduct = async (productCode) =>{ 
     const query = `SELECT 
         p.Product_code,
         p.Name   AS product_name,
@@ -24,13 +24,11 @@ const getProduct = async () =>{
     JOIN CATEGORIES c
         ON p.Category_id = c.Category_id
     WHERE p.Product_code = ?`;
-    const productCode = req.params.productCode;
     const [rowsProducts] = await pool.query(query, [productCode]);// truy  vấn sản phẩm dựa theo id
     return rowsProducts;
 }
 // xoa sản phẩm theo id
-const deleteProduct = async () =>{
-    const productCode = req.params.productCode;
+const deleteProduct = async (productCode) =>{
     const [result] = await pool.query(`DELETE FROM PRODUCTS WHERE Product_code = ?`,[productCode]);// truy  vấn tất cả sản phẩm trong product
     return result;
 }
@@ -42,8 +40,7 @@ const postProduct = async (productData) =>{
     return result;
 }
 // cập nhật sản phẩm
-const putProduct = async (productData) =>{
-    const productCode = req.params.productCode;
+const putProduct = async (productCode, productData) =>{
     const {name, categoryId, price} = productData;
     const [result] = await pool.query(`UPDATE PRODUCTS SET name = ?,Category_id=? , Price = ? WHERE Product_code = ?`, 
     [name, categoryId, price, productCode]);

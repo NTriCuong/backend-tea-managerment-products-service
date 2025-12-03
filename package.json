@@ -11,9 +11,7 @@
   },
   "keywords": [
     "nodejs",
-    "expressjs",
-    "reactjs",
-    "mongodb"
+    "expressjs"
   ],
   "author": "nguyễn trí cường",
   "license": "ISC",
