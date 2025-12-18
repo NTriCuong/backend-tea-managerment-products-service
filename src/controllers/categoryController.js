@@ -14,8 +14,8 @@ const getAllCategories = async (req, res) => {
 }
 const findCategoryById = async (req, res) => {
     try {
-        const categoryCode = req.params.categoryCode;
-        const category = await getCategoryById(categoryCode);
+        const categoryId = req.params.categoryId;
+        const category = await getCategoryById(categoryId);
         if (category.length === 0) { // nếu không tìm thấy trong db
             return res.status(404).json({ message: 'Không tìm thấy danh mục' });
         }
@@ -44,9 +44,9 @@ const createCategory = async (req, res) => {
 }
 const updateCategory = async (req, res) => {
     try{
-        const categoryCode = req.params.categoryCode; // lấy categoryCode từ params
+        const categoryId = req.params.categoryId; // lấy categoryId từ params
         const data = req.body;
-        await putCategory(categoryCode, data);
+        await putCategory(categoryId, data);
         return res.status(200).json({message: 'Cập nhật thành công'});
     } catch (error) {
         console.error('update category error:', error); // nếu không truy cập được db
@@ -58,8 +58,8 @@ const updateCategory = async (req, res) => {
 } 
 const deleteCategoryById = async (req, res) => {
     try {
-        const categoryCode = req.params.categoryCode;
-        await deleteCategory(categoryCode);
+        const categoryId = req.params.categoryId;
+        await deleteCategory(categoryId);
         return  res.status(200).json({ message: 'Xóa danh mục thành công' });
     } catch (error) {
         console.error('delete category by id error:', error); // nếu không truy cập được db

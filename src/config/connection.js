@@ -2,7 +2,7 @@ import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
 
 // đọc biến môi trường từ file .evn.db
-dotenv.config({ path: '../db/.env.db' }); 
+dotenv.config(); 
 // tạo pool chuẩn kết nối
 // console.log("process.env.DB_HOS => ", process.env.DB_HOST);
 // console.log("process.env.DB_USER => ", process.env.DB_USER);
