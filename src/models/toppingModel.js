@@ -19,21 +19,32 @@ const getToppingsById = async (toppingId) => {
     WHERE Topping_id = ?;
   `;
   const [rows] = await pool.query(query, [toppingId]);
-  return rows; // rows[0] nếu bạn muốn trả 1 object
+  return rows; 
 };
 
-// CREATE topping (Topping_id auto by trigger)
+// CREATE topping 
 const postTopping = async (toppingData) => {
   const { name, price } = toppingData;
 
   if (!name) throw new Error("Thiếu name");
   if (price == null || Number(price) <= 0) throw new Error("price phải > 0");
 
-  const [result] = await pool.query(
+  // INSERT
+  await pool.query(
     `INSERT INTO TOPPINGS (Name, Price) VALUES (?, ?)`,
     [name, price]
   );
-  return result;
+
+  // SELECT lại row vừa insert: lấy Topping_id mới nhất
+  // Vì Topping_id tăng dần theo số, lấy max là ra dòng vừa thêm
+  const [rows] = await pool.query(
+    `SELECT Topping_id, Name, Price
+     FROM TOPPINGS
+     ORDER BY CAST(SUBSTRING(Topping_id, 3) AS UNSIGNED) DESC
+     LIMIT 1`
+  );
+
+  return rows[0]; 
 };
 
 // UPDATE topping

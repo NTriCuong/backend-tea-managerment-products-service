@@ -32,8 +32,8 @@ const findCategoryById = async (req, res) => {
 const createCategory = async (req, res) => {
     try{
         const data = req.body;
-        await postCategory(data);
-        return res.status(201).json({message: 'Thêm thành công'});
+        const result = await postCategory(data);
+        return res.status(200).json({message: 'Thêm thành công',id: result.insertId,});
     } catch (error) {
         console.error('create category error:', error); // nếu không truy cập được db
         return res.status(500).json({
@@ -60,7 +60,7 @@ const deleteCategoryById = async (req, res) => {
     try {
         const categoryId = req.params.categoryId;
         await deleteCategory(categoryId);
-        return  res.status(200).json({ message: 'Xóa danh mục thành công' });
+        return  res.status(200).json({ message: 'Xóa danh mục thành công',id: categoryId });
     } catch (error) {
         console.error('delete category by id error:', error); // nếu không truy cập được db
         return res.status(500).json({

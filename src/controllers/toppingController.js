@@ -32,18 +32,16 @@ const findToppingById = async (req, res) => {
     }
 }
 const createTopping = async (req, res) => {
-    try{
-        const data = req.body;
-        await postTopping(data);
-        return res.status(201).json({message: 'Thêm topping thành công'});
-    } catch (error) {
-        console.error('create topping error:', error); // nếu không truy cập được db
-        return res.status(500).json({
-        message: 'Lỗi server',
-        error: error.message,
-        });
-    }
-}
+  try {
+    const topping = await postTopping(req.body);
+    return res.status(201).json({
+      message: "Thêm topping thành công",
+      topping, 
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Lỗi server", error: error.message });
+  }
+};
 const updateTopping = async (req, res) => {
     try{
         const toppingId = req.params.toppingId; // lấy toppingId từ params

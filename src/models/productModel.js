@@ -65,19 +65,19 @@ const postProduct = async (productData) => {
   const conn = await pool.getConnection();
   try {
     await conn.beginTransaction();
-    // 1) Insert product (trigger tự sinh Product_code)
+    // Insert product
     await conn.query(
       `INSERT INTO PRODUCTS (Name, Category_id) VALUES (?, ?)`,
       [name, categoryId]
     );
-    // 2) Lấy Product_code vừa tạo (cách nhanh)
+    //Lấy Product_code vừa tạo
     const [rows] = await conn.query(
       `SELECT Product_code FROM PRODUCTS ORDER BY Product_code DESC LIMIT 1`
     );
     const productCode = rows?.[0]?.Product_code;
     if (!productCode) throw new Error("Không lấy được Product_code vừa tạo");
 
-    // 3) Insert sizes
+    // Insert sizes
     const values = sizes.map((s) => [productCode, s.sizeId, s.price]);
     await conn.query(
       `INSERT INTO PRODUCTS_SIZES (Product_code, Size_id, Price) VALUES ?`,
@@ -98,12 +98,12 @@ const putProduct = async (productCode, productData) => {
   const conn = await pool.getConnection();
   try {
     await conn.beginTransaction();
-    // 1) Update thông tin product
+    // Update thông tin product
     const [resultProduct] = await conn.query(
       `UPDATE PRODUCTS SET Name = ?, Category_id = ? WHERE Product_code = ?`,
       [name, categoryId, productCode]
     );
-    // 2) Update giá theo size (nếu gửi sizes lên)
+    // Update giá theo size (nếu gửi sizes lên)
     if (Array.isArray(sizes) && sizes.length > 0) {
       for (const s of sizes) {
         if (!s.sizeId || s.price == null) {

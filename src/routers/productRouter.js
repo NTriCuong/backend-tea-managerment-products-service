@@ -9,7 +9,7 @@ productRouter.get('/get-product-attach-size/', getAllProductAndSize);
 productRouter.get('/:productCode',findProductById); // tim
 productRouter.post('/', verifyAccessToken, requireAdmin, createProduct); // tạo mới sản phẩm
 productRouter.put('/:productCode', verifyAccessToken, requireAdmin, updateProduct);
-productRouter.delete('/:productCode/sizes/:sizeId', verifyAccessToken, requireAdmin, deleteSize);
-productRouter.delete('/:productCode', verifyAccessToken, requireAdmin, deleteProductById);
+productRouter.delete('/:productCode/sizes/:sizeId', verifyAccessToken, requireAdmin, deleteSize);// delete size
+productRouter.delete('/:productCode', verifyAccessToken, requireAdmin, deleteProductById);// delete sản phẩm
 
 export default productRouter;

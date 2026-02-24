@@ -7,8 +7,6 @@ const verifyAccessToken = (req, res, next) => {
   if (!token) return res.status(401).json({ message: "Thiếu access token" });
 
   try {
-    console.log("process.env.JWT_SECRET: ",process.env.JWT_SECRET);
-    
     req.user = jwt.verify(token, process.env.JWT_SECRET);
     return next();
   } catch (err) {
@@ -16,7 +14,10 @@ const verifyAccessToken = (req, res, next) => {
   }
 };
 const requireAdmin = (req, res, next) => {
-  if (req.user?.role !== "Admin") return res.status(403).json({ message: "Chỉ admin được phép" });
+  const role = String(req.user?.role || "").toLowerCase();
+  if (role !== "admin") {
+    return res.status(403).json({ message: "Chỉ admin được phép" });
+  }
   next();
 };
 
